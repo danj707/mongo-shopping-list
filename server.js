@@ -32,8 +32,10 @@ if (require.main === module) {
     });
 };
 
+//require the models object
 var Item = require('./models/item');
 
+//GET route, displays a list of all the items in DB
 app.get('/items', function(req, res) {
     Item.find(function(err, items) {
         if (err) {
@@ -45,6 +47,7 @@ app.get('/items', function(req, res) {
     });
 });
 
+//POST route, updates the name of the item in DB
 app.post('/items', function(req, res) {
     Item.create({
         name: req.body.name
@@ -56,6 +59,34 @@ app.post('/items', function(req, res) {
         }
         res.status(201).json(item);
     });
+});
+
+//DELETE route, removes the item by name from the DB
+app.delete('/items', function(req,res) {
+   Item.remove({
+       name: req.body.name
+   }, function(err,item) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        res.status(201).json(item);
+   });
+});
+
+//PUT route, updates the item by name from the DB
+app.put('/items', function(req,res) {
+    var query = {name:req.body.name};
+    var update = {name:req.body.update};
+   Item.findOneAndUpdate(query,update, function(err,item) {
+         if (err) {
+             return res.status(500).json({
+                 message: 'Internal Server Error'
+             });
+         }
+         res.status(201).json(item);
+   });
 });
 
 app.use('*', function(req, res) {
