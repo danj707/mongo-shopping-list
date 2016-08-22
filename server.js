@@ -47,7 +47,7 @@ app.get('/items', function(req, res) {
     });
 });
 
-//POST route, updates the name of the item in DB
+//POST route, creates the new item in the DB
 app.post('/items', function(req, res) {
     Item.create({
         name: req.body.name
@@ -61,7 +61,7 @@ app.post('/items', function(req, res) {
     });
 });
 
-//PUT route, updates the item by name from the DB
+//PUT route, updates the item by id from the DB
 app.put('/items/:id', function(req,res) {
     var id = {_id:req.body._id};
     var update = {name:req.body.name};
