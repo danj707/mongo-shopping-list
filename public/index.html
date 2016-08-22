@@ -89,7 +89,7 @@ li {
 <script id="item-list-template" type="text/x-handlebars-template">
 <ul class="item-list">
     {{#each items}}
-    <li data-id="{{ id }}">
+    <li data-id="{{ _id }}">
         <div class="display">
             <span class="name">{{name}}</span>
             <div class="delete">
@@ -200,7 +200,7 @@ ShoppingList.prototype.deleteItem = function(id) {
     ajax.done(this.getItems.bind(this));
 };
 ShoppingList.prototype.editItem = function(id, name) {
-    var item = {'name': name, 'id': id};
+    var item = {'_id': id, 'name': name, };
     var ajax = $.ajax('/items/' + id, {
         type: 'PUT',
         data: JSON.stringify(item),

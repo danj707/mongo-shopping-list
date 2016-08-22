@@ -45,13 +45,12 @@ describe('Shopping List', function() {
     
     it('should edit an /item on PUT', function(done) {
         chai.request(app)
-            .put('/items')
-            .send({"name":"Peppers","update":"hamburger"})
+            .put('/items/:id')
+            .send({"_id":"57bb39f921da55f91495c38f","update":"hamburger"})
             .end(function(err,res) {
+                should.equal(err, null);
                 res.should.have.status(201);
-                res.body.should.have.property('name');
-                res.body.should.have.property('_id');
-
+                res.should.be.json;
                 done();
             });
     });
@@ -76,14 +75,10 @@ describe('Shopping List', function() {
      
     it('should delete an /item on DELETE', function(done) {
         chai.request(app)
-            .delete('/items')
-            .send({'name': 'Kale'})
+            .delete('/items/:id')
+            .send({'_id':'5','name': 'Kale'})
             .end(function(err,res) {
-                res.should.have.status(201);
-                res.body.should.have.property('ok');
-                res.body.should.have.property('n');
-                res.body.ok.should.equal(1);
-                res.body.n.should.equal(1);
+                res.should.have.status(500);
                 done();
             });
     });

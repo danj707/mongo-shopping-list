@@ -61,10 +61,24 @@ app.post('/items', function(req, res) {
     });
 });
 
+//PUT route, updates the item by name from the DB
+app.put('/items/:id', function(req,res) {
+    var id = {_id:req.body._id};
+    var update = {name:req.body.name};
+   Item.findOneAndUpdate(id,update, function(err,items) {
+         if (err) {
+             return res.status(500).json({
+                 message: 'Internal Server Error'
+             });
+         }
+         res.status(201).json(items);
+   });
+});
+
 //DELETE route, removes the item by name from the DB
-app.delete('/items', function(req,res) {
+app.delete('/items/:id', function(req,res) {
    Item.remove({
-       name: req.body.name
+       _id: req.params.id
    }, function(err,item) {
         if (err) {
             return res.status(500).json({
@@ -75,19 +89,7 @@ app.delete('/items', function(req,res) {
    });
 });
 
-//PUT route, updates the item by name from the DB
-app.put('/items', function(req,res) {
-    var query = {name:req.body.name};
-    var update = {name:req.body.update};
-   Item.findOneAndUpdate(query,update, function(err,item) {
-         if (err) {
-             return res.status(500).json({
-                 message: 'Internal Server Error'
-             });
-         }
-         res.status(201).json(item);
-   });
-});
+
 
 app.use('*', function(req, res) {
     res.status(404).json({
